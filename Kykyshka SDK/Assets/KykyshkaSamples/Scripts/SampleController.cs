@@ -113,7 +113,7 @@ namespace KykyshkaSamples.Scripts
             
             _sdkInstance = new Kykyshka(new SDKOptions
             {
-                DebugMode = true,                   // Debug Mode
+                DebugMode = false,                  // Debug Mode
                 AppKey = _appKey.text,              // Application Key
                 UserID = _userId.text               // User ID
             });

@@ -37,6 +37,7 @@ namespace KykyshkaSDK
             webViewObject.Init(
                 cb: (msg) =>
                 {
+                    Debug.Log("SDK WebView Message: " + msg);
                     OnMessage?.Invoke(msg);
                 },
                 err: (msg) =>
@@ -55,14 +56,9 @@ namespace KykyshkaSDK
                       try {
                         if (typeof event.data==='string')
                         {
-                          if (event.data.includes('surveyMaster'))
-                          {
-                            var _data=JSON.parse(event.data);
-                            if (_data.hasOwnProperty('surveyMaster'))
-                            {
-                                Unity.call(event.data);
-                            }
-                          }
+                          Unity.call(event.data);
+                        }else{
+                           Unity.call(JSON.stringify(event.data));
                         }
                       }
                       catch(e) {

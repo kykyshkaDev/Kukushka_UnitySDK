@@ -3,45 +3,45 @@
     "m_SelectedPackage": {
         "deviceId": "orhefyeedecqvwg6",
         "name": "com.kykyshka.example",
-        "processId": 18331,
+        "processId": 17803,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "orhefyeedecqvwg6",
+            "name": "com.kykyshka.example",
+            "processId": 19146,
+            "exited": true
+        },
+        {
+            "deviceId": "orhefyeedecqvwg6",
+            "name": "com.kykyshka.example",
+            "processId": 19470,
+            "exited": true
+        },
+        {
+            "deviceId": "orhefyeedecqvwg6",
+            "name": "com.kykyshka.example",
+            "processId": 19674,
+            "exited": true
+        },
+        {
+            "deviceId": "orhefyeedecqvwg6",
             "name": "com.microsoft.launcher",
-            "processId": 21118,
+            "processId": 23401,
             "exited": false
         },
         {
             "deviceId": "orhefyeedecqvwg6",
             "name": "com.kykyshka.example",
-            "processId": 5660,
-            "exited": true
-        },
-        {
-            "deviceId": "orhefyeedecqvwg6",
-            "name": "ru.yandex.disk",
-            "processId": 7086,
-            "exited": true
-        },
-        {
-            "deviceId": "orhefyeedecqvwg6",
-            "name": "com.google.android.packageinstaller",
-            "processId": 4707,
+            "processId": 21017,
             "exited": true
         },
         {
             "deviceId": "orhefyeedecqvwg6",
             "name": "com.kykyshka.example",
-            "processId": 8391,
-            "exited": true
-        },
-        {
-            "deviceId": "orhefyeedecqvwg6",
-            "name": "com.kykyshka.example",
-            "processId": 18331,
+            "processId": 17803,
             "exited": false
         }
     ],
@@ -96,7 +96,7 @@
         "Behavior": 0
     },
     "m_FilterOptions": {
-        "m_Filter": "",
+        "m_Filter": "SDK WebView Message",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },

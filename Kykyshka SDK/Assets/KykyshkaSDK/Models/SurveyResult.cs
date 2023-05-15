@@ -7,6 +7,7 @@
     public class SurveyResult
     {
         public SurveyMaster surveyMaster = new SurveyMaster();
+        public SurveyCustomData customData = new SurveyCustomData();
     }
 
     [System.Serializable]
@@ -32,5 +33,17 @@
         public string app_key = "";
         public int time_spent = 0;
         public int survey_key = 0;
+    }
+
+    [System.Serializable]
+    public class SurveyCustomData
+    {
+        public SurveyCustomDataSubData data = new SurveyCustomDataSubData();
+    }
+
+    [System.Serializable]
+    public class SurveyCustomDataSubData
+    {
+        public string link = "";
     }
 }

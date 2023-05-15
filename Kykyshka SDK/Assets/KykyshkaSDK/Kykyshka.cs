@@ -25,6 +25,7 @@ namespace KykyshkaSDK
         public Platform CurrentPlatform => _currentPlatfrom;    // Get SDK Platfrom
         public string UserId => _currentSetup.UserID;           // SDK User ID
         public string AppKey => _currentSetup.AppKey;           // SDK Application Key
+        public bool IsDebug => _currentSetup.DebugMode;         // SDK Debug Mode
 
         
         // Survey Options
@@ -40,6 +41,9 @@ namespace KykyshkaSDK
         private float _currentTimeout = 0f;                 // Current Timeout
         private float _maxTimeout = 10f;                    // Maximal Timeout
         
+        // Preloaded Survey Timeout
+        private float _preloadedTimeout = 600f;             // Preloaded Survey Timeout
+
         // Current Survey Parameters
         private bool _hasSurveyCalled = false;              // Is Survey Called
         private bool _hasSurveyResult = false;              // Has Survey Result
@@ -71,6 +75,9 @@ namespace KykyshkaSDK
                 InitializeFromResources();
             else
                 _currentSetup = options;
+
+            if (_currentSetup.DebugMode)
+                _currentSetup.AppKey = "gamedemo";
             
             // Get Platform
             _currentPlatfrom = GetPlatfrom();
@@ -190,6 +197,7 @@ namespace KykyshkaSDK
                     StartSurveyTimer(true);
                     ResetTimeout();
                     StartTimeout(false);
+                    ResetPreloadedTimeout();
                     OnSurveyStart?.Invoke();
                 }
 
@@ -224,6 +232,7 @@ namespace KykyshkaSDK
                 if (!_wrapper.IsWebViewShown)
                 {
                     _hasSurveyCalled = true;
+                    ResetPreloadedTimeout();
                     PrepareWebview();
                 }
                 else
@@ -263,6 +272,9 @@ namespace KykyshkaSDK
         /// </summary>
         private void InitializeFromResources()
         {
+            if(_currentSetup.DebugMode)
+                return;
+            
             // Load Asset from Resources
             TextAsset loadedData = Resources.Load<TextAsset>(Constants.ConfigResourcePath);
             if (loadedData == null || string.IsNullOrEmpty(loadedData.text))
@@ -323,6 +335,7 @@ namespace KykyshkaSDK
         {
             if(_preloadTimeout) PreloadTimeout(deltaTime);
             if (_isTimerStarted) SurveyTimerTick(deltaTime);
+            if(_hasSurveyCalled && !_wrapper.IsWebViewShown) PreloadedTimeoutTick(deltaTime);
         }
 
         /// <summary>
@@ -332,6 +345,14 @@ namespace KykyshkaSDK
         {
             _currentTimeout = _maxTimeout;
             _preloadTimeout = false;
+        }
+
+        /// <summary>
+        /// Reset preloaded Timeout
+        /// </summary>
+        private void ResetPreloadedTimeout()
+        {
+            _preloadedTimeout = 600f;
         }
 
         /// <summary>
@@ -356,6 +377,27 @@ namespace KykyshkaSDK
             else
             {
                 _currentTimeout -= deltaTime;
+            }
+        }
+
+        /// <summary>
+        /// Preloaded Timeout Tick
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        private void PreloadedTimeoutTick(float deltaTime)
+        {
+            if (_preloadedTimeout <= 0f)
+            {
+                _hasSurveyCalled = false;
+                _wrapper.ShowWebView(false);
+                _isSurveyShowing = false;
+                _hasSurveyCalled = false;
+                _hasSurveyResult = false;
+                ResetPreloadedTimeout();
+            }
+            else
+            {
+                _preloadedTimeout -= deltaTime;
             }
         }
 
@@ -413,11 +455,18 @@ namespace KykyshkaSDK
             try
             {
                 SurveyResult data = JsonUtility.FromJson<SurveyResult>(message);
-                if (data == null)
+                if (data == null || (data.customData == null && data.surveyMaster == null))
                 {
                     if(_currentSetup.DebugMode)
                         Debug.LogError(SDKCodes.EmptyDataReceived);
                     OnFail?.Invoke(null);
+                    return;
+                }
+
+                if (data.customData != null && data.customData.data != null &&
+                    !string.IsNullOrEmpty(data.customData.data.link))
+                {
+                    Application.OpenURL(data.customData.data.link);
                     return;
                 }
 
@@ -514,12 +563,12 @@ namespace KykyshkaSDK
             _hasSurveyResult = false;
 
             // Callback
-            if (data.surveyMaster.data.body.nq != null)
+            if (data.surveyMaster != null && data.surveyMaster.data.body.nq != null)
                 OnSuccess?.Invoke(data.surveyMaster.data.body.nq);
             else
                 OnSuccess?.Invoke(null);
         }
-        
+
         /// <summary>
         /// On Survey Fail
         /// </summary>

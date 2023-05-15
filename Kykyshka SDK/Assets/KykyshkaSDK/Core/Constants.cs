@@ -6,8 +6,8 @@
     public static class Constants
     {
         // SDK General Settings
-        public const string SurveyURL = "https://survey.askgames.io/";
-        public const string CallbackURL = "https://api.kykyshka.ru/v1/service/survey/";
+        public const string SurveyURL = "https://survey.askgames.io/"; // https://survey.askgames.io/
+        public const string CallbackURL = "https://api.kykyshka.ru/v1/service/survey/"; // https://api.kykyshka.ru/v1/service/survey/
         public const string SurveyVersion = "1.0.0";
         
         // SDK Wizard Constants
