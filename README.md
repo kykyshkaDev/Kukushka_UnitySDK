@@ -1,5 +1,5 @@
-# About Kykyshka SDK
-**Kykyshka SDK** makes it easy to give players survey tasks followed by a reward. The SDK can be installed and set up in minutes.
+# About Kukushka SDK
+**Kukushka SDK** makes it easy to give players survey tasks followed by a reward. The SDK can be installed and set up in minutes.
 
 This version is designed for the **Unity** game engine. Other versions of the SDK can be found below:
 - **Android SDK** can be found <a href="https://github.com/kykyshkaDev/Kykyshka_Android">here</a>;
@@ -12,7 +12,7 @@ This SDK requires Unity 2018.4+ and provided only for Android and iOS games.
 
 ## Get Started
 **Automatic installation and Setup steps:**
-1) Download [latest version of SDK](https://github.com/kykyshkaDev/Kykyshka_UnitySDK_Demo/releases) from Releases page or directly from this repository;
+1) Download [latest version of SDK](https://github.com/kykyshkaDev/Kukushka_UnitySDK/releases) from Releases page or directly from this repository;
 2) Add **.unitypackage** file to your project;
 3) Open setup wizard using "Kykyshka SDK" => "Setup Wizard" window;
 4) Type your **App Key** in the Setup Wizard;
@@ -43,7 +43,7 @@ sdkInstance.ShowSurvey();   // To Show Survey for user
 ```
 
 **SDK Callbacks:**<br/>
-Kykyshka SDK has a lot of different Callbacks for your game. Use this callbacks to detect Survey Complete or problems with loading.
+Kukushka SDK has a lot of different Callbacks for your game. Use this callbacks to detect Survey Complete or problems with loading.
 
 | Callback             | Parameters                   | Usage                                                                  |
 |----------------------|------------------------------|------------------------------------------------------------------------|
@@ -87,10 +87,10 @@ sdkInstance.OnSurveyUnavailable = () =>
 ```
 
 ## Screen Orientation
-Please, note: Currently version of Kykyshka SDK supports only Portrait orientation and your game orientation will be force changed to Portrait at Survey opening and returned to last orientation after Survey closed.
+Please, note: Currently version of Kukushka SDK supports only Portrait orientation and your game orientation will be force changed to Portrait at Survey opening and returned to last orientation after Survey closed.
 
 
 ## Third-Party Modules
-**Kykyshka SDK** uses **WebView** module to show Survey Window for your users.<br/><br/>
+**Kukushka SDK** uses **WebView** module to show Survey Window for your users.<br/><br/>
 This module provided by **Third-Party Open-Source Library** and can be found here:<br/>
 https://github.com/gree/unity-webview
