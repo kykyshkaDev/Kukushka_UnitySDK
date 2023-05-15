@@ -2,8 +2,8 @@
 **Kykyshka SDK** makes it easy to give players survey tasks followed by a reward. The SDK can be installed and set up in minutes.
 
 This version is designed for the **Unity** game engine. Other versions of the SDK can be found below:
-- **Android SDK** can be found <a href="https://github.com/TinyPlay/Kykyshka_Android">here</a>;
-- **iOS SDK** can be found <a href="https://github.com/TinyPlay/Kykyshka_iOS">here</a>;
+- **Android SDK** can be found <a href="https://github.com/kykyshkaDev/Kykyshka_Android">here</a>;
+- **iOS SDK** can be found <a href="https://github.com/kykyshkaDev/Kykyshka_iOS">here</a>;
 
 ## Requirements
 This SDK requires Unity 2018.4+ and provided only for Android and iOS games.
@@ -12,7 +12,7 @@ This SDK requires Unity 2018.4+ and provided only for Android and iOS games.
 
 ## Get Started
 **Automatic installation and Setup steps:**
-1) Download [latest version of SDK](https://github.com/TinyPlay/Kykyshka_UnitySDK/releases) from Releases page or directly from this repository;
+1) Download [latest version of SDK](https://github.com/kykyshkaDev/Kykyshka_UnitySDK_Demo/releases) from Releases page or directly from this repository;
 2) Add **.unitypackage** file to your project;
 3) Open setup wizard using "Kykyshka SDK" => "Setup Wizard" window;
 4) Type your **App Key** in the Setup Wizard;
