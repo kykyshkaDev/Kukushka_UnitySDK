@@ -29,6 +29,7 @@ Kykyshka sdkInstance = new Kykyshka(new SDKOptions
     UserID = "demouserid"           // User ID
 });
 ```
+**Pro tip:** *test your integrations with DebugMode = true to immediately see how the game would behave with an active survey* 
 
 Also you can set custom UserID for your game by **SetUserID** method:
 ```csharp
