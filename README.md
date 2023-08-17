@@ -24,7 +24,7 @@ Create your game script and initialize SDK by creating object:
 ```csharp
 Kykyshka sdkInstance = new Kykyshka(new SDKOptions
 {
-    DebugMode = true,               // Debug Mode — when active will always display a demo survey regardless of AppKey and UserID, useful for testing
+    DebugMode = true,               // Debug Mode — when active will always display a demo survey regardless of AppKey, UserID, your geo etc. Useful for testing
     AppKey = "gamedemo",            // Application Key
     UserID = "demouserid"           // User ID
 });
