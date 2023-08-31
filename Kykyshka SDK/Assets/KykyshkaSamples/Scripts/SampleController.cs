@@ -99,8 +99,8 @@ namespace KykyshkaSamples.Scripts
         {
             _sdkInstance = new Kykyshka();              // Use this way if you want to use settings from resources
             //_sdkInstance.SetUserID(your_game_user_id);         // Setup user ID from your game or will be automatically generated
-            SetAppKey(_sdkInstance.UserId);
-            SetUserId(_sdkInstance.AppKey);
+            SetAppKey(_sdkInstance.AppKey);
+            SetUserId(_sdkInstance.UserId);
         }
 
         /// <summary>
