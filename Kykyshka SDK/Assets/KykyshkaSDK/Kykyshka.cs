@@ -29,7 +29,7 @@ namespace KykyshkaSDK
 
         
         // Survey Options
-        private int _lastSurvey = -1;                      // Last Survey ID
+        private string _lastSurvey = "";                      // Last Survey ID
 
         // Survey Timer
         private bool _isTimerStarted = false;               // Is Survey Timer Started
@@ -96,7 +96,7 @@ namespace KykyshkaSDK
 
             // Validate User ID
             _currentSetup.UserID = PlayerPrefs.GetString(Constants.UserIDStorageKey, "");
-            _lastSurvey = PlayerPrefs.GetInt(Constants.LastSurveyKey, -1);
+            _lastSurvey = PlayerPrefs.GetString(Constants.LastSurveyKey, "");
             if (!ValidationUtil.ValidateUserID(_currentSetup.UserID))
             {
                 if (_currentSetup.DebugMode)
@@ -134,7 +134,7 @@ namespace KykyshkaSDK
         public void ClearStorage()
         {
             PlayerPrefs.SetString(Constants.UserIDStorageKey, "");
-            PlayerPrefs.SetInt(Constants.LastSurveyKey, -1);
+            PlayerPrefs.SetString(Constants.LastSurveyKey, "");
         }
 
         /// <summary>
@@ -174,10 +174,10 @@ namespace KykyshkaSDK
         /// Set Last Survey ID
         /// </summary>
         /// <param name="surveyId"></param>
-        public void SetLastSurvey(int surveyId)
+        public void SetLastSurvey(string surveyId)
         {
             _lastSurvey = surveyId;
-            PlayerPrefs.SetInt(Constants.LastSurveyKey, _lastSurvey);
+            PlayerPrefs.SetString(Constants.LastSurveyKey, _lastSurvey);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace KykyshkaSDK
         /// <returns></returns>
         private string GetURLString()
         {
-            string urlString = $"?isWebView=1&platform={(int)_currentPlatfrom}&gid={AppKey}&uid={UserId}&version={Constants.SurveyVersion}&lastSurvey={_lastSurvey}&surveyUrlParams={_additionalUrlParams}";
+            string urlString = $"?isWebView=1&send_from_page=1&platform={(int)_currentPlatfrom}&gid={AppKey}&uid={UserId}&version={Constants.SurveyVersion}&lastSurvey={_lastSurvey}&surveyUrlParams={_additionalUrlParams}";
             return urlString;
         }
         
@@ -536,7 +536,7 @@ namespace KykyshkaSDK
             SetLastSurvey(data.surveyMaster.data.body.survey_key);
 
             // Send Request to Server
-            AnswerRequest reqData = new AnswerRequest
+            /*AnswerRequest reqData = new AnswerRequest
             {
                 body = data.surveyMaster.data.body
             };
@@ -548,7 +548,7 @@ namespace KykyshkaSDK
             {
                 if(_currentSetup.DebugMode)
                     Debug.Log($"Survey Error: {error}");
-            });
+            });*/
         }
         
         /// <summary>

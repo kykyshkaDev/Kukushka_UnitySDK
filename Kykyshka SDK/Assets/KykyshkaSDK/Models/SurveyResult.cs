@@ -32,7 +32,7 @@
         public string user_id = "";
         public string app_key = "";
         public int time_spent = 0;
-        public int survey_key = 0;
+        public string survey_key = "";
     }
 
     [System.Serializable]
