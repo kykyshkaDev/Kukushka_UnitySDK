@@ -3,7 +3,7 @@
 
 This version is designed for the **Unity** game engine. Other versions of the SDK can be found below:
 - **Android SDK** can be found <a href="https://github.com/kykyshkaDev/Kykyshka_Android">here</a>;
-- **iOS SDK** can be found <a href="https://github.com/kykyshkaDev/Kykyshka_iOS">here</a>;
+- **iOS SDK** coming soon!
 
 ## Requirements
 This SDK requires Unity 2018.4+ and provided only for Android and iOS games.
