@@ -29,7 +29,7 @@ namespace KykyshkaSDK
 
         
         // Survey Options
-        private string _lastSurvey = "";                      // Last Survey ID
+        private int _lastSurvey = -1;                      // Last Survey ID
 
         // Survey Timer
         private bool _isTimerStarted = false;               // Is Survey Timer Started
@@ -96,7 +96,7 @@ namespace KykyshkaSDK
 
             // Validate User ID
             _currentSetup.UserID = PlayerPrefs.GetString(Constants.UserIDStorageKey, "");
-            _lastSurvey = PlayerPrefs.GetString(Constants.LastSurveyKey, "");
+            _lastSurvey = PlayerPrefs.GetInt(Constants.LastSurveyKey, -1);
             if (!ValidationUtil.ValidateUserID(_currentSetup.UserID))
             {
                 if (_currentSetup.DebugMode)
@@ -134,7 +134,7 @@ namespace KykyshkaSDK
         public void ClearStorage()
         {
             PlayerPrefs.SetString(Constants.UserIDStorageKey, "");
-            PlayerPrefs.SetString(Constants.LastSurveyKey, "");
+            PlayerPrefs.SetInt(Constants.LastSurveyKey, -1);
         }
 
         /// <summary>
@@ -174,10 +174,10 @@ namespace KykyshkaSDK
         /// Set Last Survey ID
         /// </summary>
         /// <param name="surveyId"></param>
-        public void SetLastSurvey(string surveyId)
+        public void SetLastSurvey(int surveyId)
         {
             _lastSurvey = surveyId;
-            PlayerPrefs.SetString(Constants.LastSurveyKey, _lastSurvey);
+            PlayerPrefs.SetInt(Constants.LastSurveyKey, _lastSurvey);
         }
 
         /// <summary>
@@ -542,12 +542,12 @@ namespace KykyshkaSDK
             };
             _wrapper.SendRequest(Constants.CallbackURL + "answer", JsonUtility.ToJson(reqData), res =>
             {
-                //if(_currentSetup.DebugMode)
+                if(_currentSetup.DebugMode)
                     Debug.Log($"Survey Response: {res}");
             }, error =>
             {
-                //if(_currentSetup.DebugMode)
-                    Debug.Log($"Survey Error is: {error}");
+                if(_currentSetup.DebugMode)
+                    Debug.Log($"Survey Error: {error}");
             });
         }
         
