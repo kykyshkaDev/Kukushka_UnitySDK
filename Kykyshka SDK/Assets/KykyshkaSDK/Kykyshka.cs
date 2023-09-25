@@ -445,7 +445,7 @@ namespace KykyshkaSDK
             // Received Error
             if (message == Constants.MessageError)
             {
-                if(_currentSetup.DebugMode)
+                //if(_currentSetup.DebugMode)
                     Debug.LogError(SDKCodes.FailedToParseMessage);
                 OnFail?.Invoke(null);
                 return;
@@ -457,7 +457,7 @@ namespace KykyshkaSDK
                 SurveyResult data = JsonUtility.FromJson<SurveyResult>(message);
                 if (data == null || (data.customData == null && data.surveyMaster == null))
                 {
-                    if(_currentSetup.DebugMode)
+                    //if(_currentSetup.DebugMode)
                         Debug.LogError(SDKCodes.EmptyDataReceived);
                     OnFail?.Invoke(null);
                     return;
@@ -480,9 +480,9 @@ namespace KykyshkaSDK
             }
             catch
             {
-                if(_currentSetup.DebugMode)
+                //if(_currentSetup.DebugMode)
                     Debug.LogError(SDKCodes.FailedToParseMessage);
-                OnFail?.Invoke(null);
+                //OnFail?.Invoke(null);
             }
         }
 
