@@ -68,8 +68,16 @@ namespace KykyshkaSDK
         /// Initialize SDK
         /// </summary>
         /// <param name="options"></param>
-        public Kykyshka(SDKOptions options = null)
+        public Kykyshka(SDKOptions options = null, Action onInitialized = null, Action<string> initializationError = null)
         {
+            if (onInitialized != null)
+            {
+                OnInitialized = onInitialized;
+            }
+            if (initializationError != null)
+            {
+                OnInitializationError = initializationError;
+            }
             // Initialize SDK Options
             if (options == null)
                 InitializeFromResources();
@@ -480,7 +488,7 @@ namespace KykyshkaSDK
             }
             catch
             {
-                //if(_currentSetup.DebugMode)
+                if(_currentSetup.DebugMode)
                     Debug.LogError(SDKCodes.FailedToParseMessage);
                 //OnFail?.Invoke(null);
             }
