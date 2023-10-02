@@ -2,7 +2,7 @@
 **Kukushka SDK** makes it easy to give players survey tasks followed by a reward. The SDK can be installed and set up in minutes.
 
 This version is designed for the **Unity** game engine. Other versions of the SDK can be found below:
-- **Android SDK** can be found <a href="https://github.com/kykyshkaDev/Kykyshka_Android">here</a>;
+- **Android SDK** coming soon!
 - **iOS SDK** coming soon!
 
 ## Requirements
