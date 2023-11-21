@@ -18,7 +18,7 @@ public class UnityWebViewPostprocessBuild : IPostGenerateGradleAndroidProject
 public class UnityWebViewPostprocessBuild
 #endif
 {
-    private static bool nofragment = true;
+    private static bool nofragment = false;
 
     //// for android/unity 2018.1 or newer
     //// cf. https://forum.unity.com/threads/android-hardwareaccelerated-is-forced-false-in-all-activities.532786/
@@ -75,12 +75,15 @@ public class UnityWebViewPostprocessBuild
                 }
             }
         }
+        changed = (androidManifest.SetExported(true) || changed);
+        changed = (androidManifest.SetWindowSoftInputMode("adjustPan") || changed);
         changed = (androidManifest.SetHardwareAccelerated(true) || changed);
 #if UNITYWEBVIEW_ANDROID_USES_CLEARTEXT_TRAFFIC
         changed = (androidManifest.SetUsesCleartextTraffic(true) || changed);
 #endif
 #if UNITYWEBVIEW_ANDROID_ENABLE_CAMERA
         changed = (androidManifest.AddCamera() || changed);
+        changed = (androidManifest.AddGallery() || changed);
 #endif
 #if UNITYWEBVIEW_ANDROID_ENABLE_MICROPHONE
         changed = (androidManifest.AddMicrophone() || changed);
@@ -161,12 +164,14 @@ public class UnityWebViewPostprocessBuild
                     }
                 }
             }
+            changed = (androidManifest.SetWindowSoftInputMode("adjustPan") || changed);
             changed = (androidManifest.SetHardwareAccelerated(true) || changed);
 #if UNITYWEBVIEW_ANDROID_USES_CLEARTEXT_TRAFFIC
             changed = (androidManifest.SetUsesCleartextTraffic(true) || changed);
 #endif
 #if UNITYWEBVIEW_ANDROID_ENABLE_CAMERA
             changed = (androidManifest.AddCamera() || changed);
+            changed = (androidManifest.AddGallery() || changed);
 #endif
 #if UNITYWEBVIEW_ANDROID_ENABLE_MICROPHONE
             changed = (androidManifest.AddMicrophone() || changed);
@@ -215,13 +220,19 @@ public class UnityWebViewPostprocessBuild
                 var method = type.GetMethod("AddFrameworkToProject");
                 method.Invoke(proj, new object[]{target, "WebKit.framework", false});
             }
-#if UNITYWEBVIEW_IOS_ALLOW_FILE_URLS
-            // proj.AddBuildProperty(target, "OTHER_LDFLAGS", "-DUNITYWEBVIEW_IOS_ALLOW_FILE_URLS");
-            {
-                var method = type.GetMethod("AddBuildProperty", new Type[]{typeof(string), typeof(string), typeof(string)});
-                method.Invoke(proj, new object[]{target, "OTHER_CFLAGS", "-DUNITYWEBVIEW_IOS_ALLOW_FILE_URLS"});
+            var cflags = "";
+            if (EditorUserBuildSettings.development) {
+                cflags += " -DUNITYWEBVIEW_DEVELOPMENT";
             }
+#if UNITYWEBVIEW_IOS_ALLOW_FILE_URLS
+            cflags += " -DUNITYWEBVIEW_IOS_ALLOW_FILE_URLS";
 #endif
+            cflags = cflags.Trim();
+            if (!string.IsNullOrEmpty(cflags)) {
+                // proj.AddBuildProperty(target, "OTHER_LDFLAGS", cflags);
+                var method = type.GetMethod("AddBuildProperty", new Type[]{typeof(string), typeof(string), typeof(string)});
+                method.Invoke(proj, new object[]{target, "OTHER_CFLAGS", cflags});
+            }
             var dst = "";
             //dst = proj.WriteToString();
             {
@@ -289,6 +300,27 @@ internal class AndroidManifest : AndroidXmlDocument {
         bool changed = false;
         if (ApplicationElement.GetAttribute("usesCleartextTraffic", AndroidXmlNamespace) != ((enabled) ? "true" : "false")) {
             ApplicationElement.SetAttribute("usesCleartextTraffic", AndroidXmlNamespace, (enabled) ? "true" : "false");
+            changed = true;
+        }
+        return changed;
+    }
+
+    // for api level 33
+    internal bool SetExported(bool enabled) {
+        bool changed = false;
+        var activity = GetActivityWithLaunchIntent() as XmlElement;
+        if (activity.GetAttribute("exported", AndroidXmlNamespace) != ((enabled) ? "true" : "false")) {
+            activity.SetAttribute("exported", AndroidXmlNamespace, (enabled) ? "true" : "false");
+            changed = true;
+        }
+        return changed;
+    }
+
+    internal bool SetWindowSoftInputMode(string mode) {
+        bool changed = false;
+        var activity = GetActivityWithLaunchIntent() as XmlElement;
+        if (activity.GetAttribute("windowSoftInputMode", AndroidXmlNamespace) != mode) {
+            activity.SetAttribute("windowSoftInputMode", AndroidXmlNamespace, mode);
             changed = true;
         }
         return changed;
@@ -371,6 +403,60 @@ internal class AndroidManifest : AndroidXmlDocument {
             var elem = CreateElement("uses-permission");
             elem.Attributes.Append(CreateAndroidAttribute("name", "android.permission.ACCESS_MEDIA_LOCATION"));
             ManifestElement.AppendChild(elem);
+            changed = true;
+        }
+        // cf. https://developer.android.com/training/package-visibility/declaring
+        if (SelectNodes("/manifest/queries", nsMgr).Count == 0) {
+            var elem = CreateElement("queries");
+            ManifestElement.AppendChild(elem);
+            changed = true;
+        }
+        if (SelectNodes("/manifest/queries/intent/action[@android:name='android.media.action.IMAGE_CAPTURE']", nsMgr).Count == 0) {
+            var action = CreateElement("action");
+            action.Attributes.Append(CreateAndroidAttribute("name", "android.media.action.IMAGE_CAPTURE"));
+            var intent = CreateElement("intent");
+            intent.AppendChild(action);
+            var queries = SelectSingleNode("/manifest/queries") as XmlElement;
+            queries.AppendChild(intent);
+            changed = true;
+        }
+        return changed;
+    }
+
+    internal bool AddGallery() {
+        bool changed = false;
+        // for api level 33
+        if (SelectNodes("/manifest/uses-permission[@android:name='android.permission.READ_MEDIA_IMAGES']", nsMgr).Count == 0) {
+            var elem = CreateElement("uses-permission");
+            elem.Attributes.Append(CreateAndroidAttribute("name", "android.permission.READ_MEDIA_IMAGES"));
+            ManifestElement.AppendChild(elem);
+            changed = true;
+        }
+        if (SelectNodes("/manifest/uses-permission[@android:name='android.permission.READ_MEDIA_VIDEO']", nsMgr).Count == 0) {
+            var elem = CreateElement("uses-permission");
+            elem.Attributes.Append(CreateAndroidAttribute("name", "android.permission.READ_MEDIA_VIDEO"));
+            ManifestElement.AppendChild(elem);
+            changed = true;
+        }
+        if (SelectNodes("/manifest/uses-permission[@android:name='android.permission.READ_MEDIA_AUDIO']", nsMgr).Count == 0) {
+            var elem = CreateElement("uses-permission");
+            elem.Attributes.Append(CreateAndroidAttribute("name", "android.permission.READ_MEDIA_AUDIO"));
+            ManifestElement.AppendChild(elem);
+            changed = true;
+        }
+        // cf. https://developer.android.com/training/package-visibility/declaring
+        if (SelectNodes("/manifest/queries", nsMgr).Count == 0) {
+            var elem = CreateElement("queries");
+            ManifestElement.AppendChild(elem);
+            changed = true;
+        }
+        if (SelectNodes("/manifest/queries/intent/action[@android:name='android.media.action.GET_CONTENT']", nsMgr).Count == 0) {
+            var action = CreateElement("action");
+            action.Attributes.Append(CreateAndroidAttribute("name", "android.media.action.GET_CONTENT"));
+            var intent = CreateElement("intent");
+            intent.AppendChild(action);
+            var queries = SelectSingleNode("/manifest/queries") as XmlElement;
+            queries.AppendChild(intent);
             changed = true;
         }
         return changed;
