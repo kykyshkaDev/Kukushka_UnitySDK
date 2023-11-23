@@ -280,7 +280,7 @@ namespace KykyshkaSDK
         /// </summary>
         private void InitializeFromResources()
         {
-            if(_currentSetup.DebugMode)
+            if(_currentSetup is {DebugMode: true})
                 return;
             
             // Load Asset from Resources
