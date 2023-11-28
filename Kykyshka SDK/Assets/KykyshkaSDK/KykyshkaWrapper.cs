@@ -26,7 +26,7 @@ namespace KykyshkaSDK
         public bool IsWebViewShown => _isWebViewShown;
         
         // Latest Screen Orientation
-        private ScreenOrientation _latestOrientation;
+        private ScreenOrientation _latestOrientation = ScreenOrientation.AutoRotation;
 
         /// <summary>
         /// On Wrapper Started
