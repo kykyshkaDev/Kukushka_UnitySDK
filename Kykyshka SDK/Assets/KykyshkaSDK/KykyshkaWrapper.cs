@@ -79,7 +79,6 @@ namespace KykyshkaSDK
                     // NOTE: the following js definition is required only for UIWebView; if
                     // enabledWKWebView is true and runtime has WKWebView, Unity.call is defined
                     // directly by the native plugin.
-#if true
                     var js = @"
                     if (!(window.webkit && window.webkit.messageHandlers)) {
                         window.Unity = {
@@ -89,33 +88,6 @@ namespace KykyshkaSDK
                         };
                     }
                 ";
-#else
-                // NOTE: depending on the situation, you might prefer this 'iframe' approach.
-                // cf. https://github.com/gree/unity-webview/issues/189
-                var js = @"
-                    if (!(window.webkit && window.webkit.messageHandlers)) {
-                        window.Unity = {
-                            call: function(msg) {
-                                var iframe = document.createElement('IFRAME');
-                                iframe.setAttribute('src', 'unity:' + msg);
-                                document.documentElement.appendChild(iframe);
-                                iframe.parentNode.removeChild(iframe);
-                                iframe = null;
-                            }
-                        };
-                    }
-                ";
-#endif
-#elif UNITY_WEBPLAYER || UNITY_WEBGL
-                var js = @"
-                    window.Unity = {
-                        call:function(msg) {
-                            parent.unityWebView.sendMessage('WebViewObject', msg);
-                        }
-                    };
-                ";
-#else
-                var js = "";
 #endif
                     webViewObject.EvaluateJS(js + @"Unity.call('ua=' + navigator.userAgent)");
                     OnLoadComplete?.Invoke();
@@ -125,9 +97,9 @@ namespace KykyshkaSDK
                 wkAllowsLinkPreview: true
             );
             
-            #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
             webViewObject.bitmapRefreshCycle = 1;
-            #endif
+#endif
             
             // Disable Scrollbars
             webViewObject.SetScrollbarsVisibility(false);
