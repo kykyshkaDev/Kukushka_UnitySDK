@@ -1,5 +1,4 @@
-﻿using System;
-using KykyshkaSDK;
+﻿using KykyshkaSDK;
 using KykyshkaSDK.Models;
 using UnityEngine;
 using UnityEngine.UI;
