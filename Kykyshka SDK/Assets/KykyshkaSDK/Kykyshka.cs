@@ -84,7 +84,7 @@ namespace KykyshkaSDK
             else
                 _currentSetup = options;
 
-            if (_currentSetup.DebugMode)
+            if (_currentSetup.DebugMode && string.IsNullOrEmpty(_currentSetup.AppKey))
                 _currentSetup.AppKey = "gamedemo";
             
             // Get Platform
