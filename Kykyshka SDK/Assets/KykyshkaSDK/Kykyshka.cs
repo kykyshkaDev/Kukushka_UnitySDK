@@ -103,7 +103,9 @@ namespace KykyshkaSDK
             }
 
             // Validate User ID
-            _currentSetup.UserID = PlayerPrefs.GetString(Constants.UserIDStorageKey, "");
+            if(string.IsNullOrEmpty(_currentSetup.UserID))
+                _currentSetup.UserID = PlayerPrefs.GetString(Constants.UserIDStorageKey, "");
+            
             _lastSurvey = PlayerPrefs.GetString(Constants.LastSurveyKey, "");
             if (!ValidationUtil.ValidateUserID(_currentSetup.UserID))
             {
