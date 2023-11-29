@@ -88,6 +88,7 @@ public class WebViewObject : MonoBehaviour
     bool mVisibility;
     int mKeyboardVisibleHeight;
     float mResumedTimestamp;
+    int mLastScreenHeight;
 #if UNITYWEBVIEW_ANDROID_ENABLE_NAVIGATOR_ONLINE
     float androidNetworkReachabilityCheckT0 = -1.0f;
     NetworkReachability? androidNetworkReachability0 = null;
@@ -149,6 +150,11 @@ public class WebViewObject : MonoBehaviour
         {
             mResumedTimestamp = 0.0f;
             webView.Call("SetVisibility", mVisibility);
+        }
+        if (Screen.height != mLastScreenHeight)
+        {
+            mLastScreenHeight = Screen.height;
+            webView.Call("EvaluateJS", "(function() {var e = document.activeElement; if (e != null && e.tagName.toLowerCase() != 'body') {e.blur(); e.focus();}})()");
         }
         for (;;) {
             if (webView == null)
@@ -363,17 +369,17 @@ public class WebViewObject : MonoBehaviour
         else
         {
             int keyboardHeight = 0;
-            using(AndroidJavaClass UnityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (var unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (var activity = unityClass.GetStatic<AndroidJavaObject>("currentActivity"))
+            using (var player = activity.Get<AndroidJavaObject>("mUnityPlayer"))
+            using (var view = player.Call<AndroidJavaObject>("getView"))
+            using (var rect = new AndroidJavaObject("android.graphics.Rect"))
             {
-                AndroidJavaObject View = UnityClass.GetStatic<AndroidJavaObject>("currentActivity").Get<AndroidJavaObject>("mUnityPlayer").Call<AndroidJavaObject>("getView");
-                using(AndroidJavaObject Rct = new AndroidJavaObject("android.graphics.Rect"))
-                {
-                    View.Call("getDrawingRect", Rct);
-                    int h0 = Rct.Call<int>("height");
-                    View.Call("getWindowVisibleDisplayFrame", Rct);
-                    int h1 = Rct.Call<int>("height");
-                    keyboardHeight = h0 - h1;
-                }
+                view.Call("getDrawingRect", rect);
+                int h0 = rect.Call<int>("height");
+                view.Call("getWindowVisibleDisplayFrame", rect);
+                int h1 = rect.Call<int>("height");
+                keyboardHeight = h0 - h1;
             }
             return (bottom > keyboardHeight) ? bottom : keyboardHeight;
         }
@@ -584,7 +590,10 @@ public class WebViewObject : MonoBehaviour
     public static bool IsWebViewAvailable()
     {
 #if !UNITY_EDITOR && UNITY_ANDROID
-        return (new AndroidJavaObject("net.gree.unitywebview.CWebViewPlugin")).CallStatic<bool>("IsWebViewAvailable");
+        using (var plugin = new AndroidJavaObject("net.gree.unitywebview.CWebViewPlugin"))
+        {
+            return plugin.CallStatic<bool>("IsWebViewAvailable");
+        }
 #else
         return true;
 #endif
@@ -699,6 +708,7 @@ public class WebViewObject : MonoBehaviour
         if (webView == null)
             return;
         webView.Call("Destroy");
+        webView.Dispose();
         webView = null;
 #endif
     }

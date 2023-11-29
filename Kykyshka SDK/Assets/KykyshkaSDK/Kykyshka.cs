@@ -84,7 +84,7 @@ namespace KykyshkaSDK
             else
                 _currentSetup = options;
 
-            if (_currentSetup.DebugMode)
+            if (_currentSetup.DebugMode && string.IsNullOrEmpty(_currentSetup.AppKey))
                 _currentSetup.AppKey = "gamedemo";
             
             // Get Platform
@@ -103,7 +103,9 @@ namespace KykyshkaSDK
             }
 
             // Validate User ID
-            _currentSetup.UserID = PlayerPrefs.GetString(Constants.UserIDStorageKey, "");
+            if(string.IsNullOrEmpty(_currentSetup.UserID))
+                _currentSetup.UserID = PlayerPrefs.GetString(Constants.UserIDStorageKey, "");
+            
             _lastSurvey = PlayerPrefs.GetString(Constants.LastSurveyKey, "");
             if (!ValidationUtil.ValidateUserID(_currentSetup.UserID))
             {
@@ -280,7 +282,7 @@ namespace KykyshkaSDK
         /// </summary>
         private void InitializeFromResources()
         {
-            if(_currentSetup.DebugMode)
+            if(_currentSetup is {DebugMode: true})
                 return;
             
             // Load Asset from Resources

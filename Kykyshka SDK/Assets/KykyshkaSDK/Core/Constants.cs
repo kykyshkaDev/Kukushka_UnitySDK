@@ -8,7 +8,7 @@
         // SDK General Settings
         public const string SurveyURL = "https://survey.kykyshka.ru/"; // https://survey.kykyshka.ru/
         public const string CallbackURL = "https://api.kykyshka.ru/v1/service/survey/"; // https://api.kykyshka.ru/v1/service/survey/
-        public const string SurveyVersion = "1.0.1";
+        public const string SurveyVersion = "1.0.2";
         
         // SDK Wizard Constants
         public const string SDKGit = "https://github.com/kykyshkaDev/Kukushka_UnitySDK";
