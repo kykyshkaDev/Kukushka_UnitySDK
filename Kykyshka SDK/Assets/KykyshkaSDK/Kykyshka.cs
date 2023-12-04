@@ -573,10 +573,10 @@ namespace KykyshkaSDK
             _hasSurveyResult = false;
 
             // Callback
-            if (data.surveyMaster != null && data.surveyMaster.data.body.nq != null)
+            //if (data.surveyMaster != null && data.surveyMaster.data.body.nq != null)
                 OnSuccess?.Invoke(data.surveyMaster.data.body.nq);
-            else
-                OnSuccess?.Invoke(null);
+            /*else
+                OnSuccess?.Invoke(null);*/
         }
 
         /// <summary>

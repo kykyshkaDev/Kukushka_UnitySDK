@@ -26,7 +26,7 @@
     [System.Serializable]
     public class SurveyBody
     {
-        public int? nq;
+        public int nq = 0;
         public int start_time = 0;
         public string token = "";
         public string user_id = "";

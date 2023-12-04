@@ -47,7 +47,7 @@ namespace KykyshkaSamples.Scripts
             };
             _sdkInstance.OnSuccess = hq =>              // On Survey Complete
             {
-                SetStatus("Survey Complete!");
+                SetStatus((hq==1) ? "Screened out" : "Survey Complete!");
             };
             _sdkInstance.OnFail = data =>         // On Survey Failed
             {

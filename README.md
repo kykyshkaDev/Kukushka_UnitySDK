@@ -53,7 +53,7 @@ Kukushka SDK has a lot of different Callbacks for your game. Use this callbacks 
 | **OnSurveyStart** | -                            | Called when user started survey                                        |
 | **OnSurveyAvailable** | -                            | Called after preloading if surveys available                           |
 | **OnSurveyUnavailable** | -                            | Called after preloading if surveys unavailable                         |
-| **OnSuccess** | **int** or **null**          | Called when user complete survey. May contain additional data.         |
+| **OnSuccess** | **int**        | Called when user complete survey. If a passed parameter is 1, the user was screened out by screening questions         |
 | **OnFail**    | **SurveyResult** or **null** | Called when user got error in the survey. May contain additional data. |
 | **OnLoadFail** | -                            | Called when Survey has loading error                                   |
 | **OnError** | -                            | On General SDK Errors Callback                                         |
@@ -68,6 +68,7 @@ sdkInstance.OnSurveyStart = () =>
 sdkInstance.OnSuccess = hq =>
 {
     // Called when user complete survey
+	//Debug.Log((hq==1) "Screened out" : "Survey complete!")
 };
 sdkInstance.OnFail = data =>
 {
