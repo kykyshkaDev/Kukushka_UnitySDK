@@ -28,7 +28,8 @@ Kykyshka sdkInstance = new Kykyshka(new SDKOptions
 {
     DebugMode = true,               // Debug Mode — when active will always display a demo survey regardless of AppKey, UserID, your geo etc. Useful for testing
     AppKey = "gamedemo",            // Application Key
-    UserID = "demouserid"           // User ID
+    UserID = "demouserid",          // User ID
+    InnerMode = false               // Set to true only if you wish to send your own surveys to your app's audience — contact us to launch such surveys. Otherwise, set to false
 });
 ```
 **Pro tip:** test your integrations with DebugMode = true to immediately see how the game would behave with an active survey
