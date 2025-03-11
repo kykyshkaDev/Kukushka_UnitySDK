@@ -26,6 +26,7 @@ namespace KykyshkaSDK
         public string UserId => _currentSetup.UserID;           // SDK User ID
         public string AppKey => _currentSetup.AppKey;           // SDK Application Key
         public bool IsDebug => _currentSetup.DebugMode;         // SDK Debug Mode
+        public bool IsInner => _currentSetup.InnerMode;         // SDK Inner Mode
 
         
         // Survey Options
@@ -273,8 +274,10 @@ namespace KykyshkaSDK
         /// <returns></returns>
         private string GetURLString()
         {
-            string urlString = $"?isWebView=1&send_from_page=1&platform={(int)_currentPlatfrom}&gid={AppKey}&uid={UserId}&version={Constants.SurveyVersion}&lastSurvey={_lastSurvey}&surveyUrlParams={_additionalUrlParams}";
-            return urlString;
+            return $"?isWebView=1&send_from_page=1&platform={(int)_currentPlatfrom}" +
+                   $"&gid={AppKey}&uid={UserId}&version={Constants.SurveyVersion}" +
+                   $"&lastSurvey={_lastSurvey}&surveyUrlParams={_additionalUrlParams}" +
+                   $"&innerSurvey={IsInner}";
         }
         
         /// <summary>

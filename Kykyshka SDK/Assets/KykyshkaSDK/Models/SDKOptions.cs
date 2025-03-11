@@ -7,6 +7,7 @@
     public class SDKOptions
     {
         public bool DebugMode = false;                  // Debug Mode
+        public bool InnerMode = false;                  // Inner Mode
         public string UserID = "";                      // User ID
         public string AppKey = "";                      // Application Key
     }
